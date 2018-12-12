@@ -1,23 +1,22 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
+import HomeContainer from "./components/tabbar/HomeContainer.vue"
+import CategoryContainer from "./components/tabbar/CategoryContainer.vue"
+import ShoppingContainer from "./components/tabbar/ShoppingContainer.vue"
+import BuyCarContainer from "./components/tabbar/BuyCarContainer.vue"
+import CenterContainer from "./components/tabbar/CenterContainer.vue"
 
-Vue.use(Router)
+import VueRouter from "vue-router"
 
-export default new Router({
+Vue.use(VueRouter)
+
+export default new VueRouter({
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
+    {path: "/", name: "home", redirect: "/home" },
+    {path: "/home", name: "home", component: HomeContainer},
+    {path: "/category", name: "category", component: CategoryContainer},
+    {path: "/shopping", name: "shopping", component: ShoppingContainer},
+    {path: "/buycar", name: "buycar", component: BuyCarContainer},
+    {path: "/center", name: "center", component: CenterContainer}
+    // {path: '/', name: '', component: () => import('')}
   ]
 })
