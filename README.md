@@ -15,4 +15,4 @@
 
 1. 由于 mui 框架缺陷的原因, 最终弃用, 使用 element 
 
-2. 在组件样式中, 发现 对 mint-ui 组件添加 CSS 样式: 原因是作用域, 将组件中 style 行内 scope 去掉就可以了
+2. 在组件样式中, 发现 对 mint-ui 组件添加 CSS 样式: 原因是作用域, 将组件中 style 行内 scoped 去掉就可以了
