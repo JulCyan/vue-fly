@@ -4,22 +4,29 @@
   <div id="app">
 
     <!-- 顶部 -->
-    <mt-header title="我的商城" id="header">
+    <mt-header :title="$store.state.title" id="header">
       <router-link to="/" slot="left">
         <!--<mt-button icon="back">返回</mt-button>-->
       </router-link>
-      <router-link tag="button" class="mint-button fa fa-search mint-button--default mint-button--normal" slot="right"
-                   to="/search"></router-link>
+      <router-link tag="button" class="mint-button el-icon-search mint-button--default mint-button--normal" slot="right"
+                    to="/search"></router-link>
     </mt-header>
+
+
 
     <!--<header id="header">-->
     <!--<h3>我的商城</h3>-->
     <!--<router-link to="/search" class="fa fa-search"></router-link>-->
     <!--</header>-->
 
+    <transition name="search">
+      <router-view name="search"></router-view>
+    </transition>
 
-    <transition>
-      <router-view></router-view>
+
+    <transition name="main">
+
+      <router-view name="main"></router-view>
     </transition>
 
 
@@ -33,11 +40,12 @@
         <img ref="category" @click="tabbarChangeCategory"
              src="https://m.360buyimg.com/mobilecms/jfs/t19183/49/696491919/3763/dec8cceb/5aa10cdbNa9cd0320.png">
       </router-link>
-      <router-link to="shopping" class=routerLink>
+      <router-link to="shopping" class="routerLink">
         <img
             src="https://img11.360buyimg.com/jdphoto/s130x100_jfs/t25261/337/1250179439/2765/db2976c3/5b8e4ac3N749fb56e.png">
       </router-link>
-      <router-link to="buyCar" class=routerLink>
+      <router-link to="buyCar" class="routerLink buyCarLink">
+        <span id="goods">{{ number }}</span>
         <img
             src="https://m.360buyimg.com/mobilecms/jfs/t18583/69/717127328/4407/5e47882b/5aa10ceaN649eec12.png">
       </router-link>
@@ -56,10 +64,11 @@
 
 <script>
 
-
   export default {
     data() {
-      return {}
+      return {
+        number : 0
+      }
     },
     methods: {
       changeHome() {
@@ -69,13 +78,23 @@
         this.$refs.category.src = "https://m.360buyimg.com/mobilecms/jfs/t19183/49/696491919/3763/dec8cceb/5aa10cdbNa9cd0320.png"
       },
       tabbarChangeHome() {
+        this.$Toast({
+          message: 'HI',
+          position: 'middle',
+          duration: 2000
+        })
         this.changeCategory()
         this.$refs.home.src = "https://m.360buyimg.com/mobilecms/jfs/t15145/137/2502885754/3106/de5e0b14/5aa10cd2N46f18ce6.png"
+        this.changeTitle()
       },
       tabbarChangeCategory() {
         this.changeHome()
         this.$refs.category.src = "https://m.360buyimg.com/mobilecms/jfs/t17578/307/690695366/3731/8695ed50/5aa10cdbNf3977e9f.png"
+        this.changeTitle()
       },
+      changeTitle() {
+        this.$store.commit("changeTitle", "我的商城")
+      }
     }
   }
 </script>
@@ -84,10 +103,10 @@
 <style lang="less" scoped>
   @main-color: #f10215;
   #app {
-    overflow: hidden;
+    overflow-x: hidden;
     position: relative;
     padding-top: .45rem;
-    padding-bottom: .5rem;
+    padding-bottom: .45rem;
     height: 100%;
 
     #header {
@@ -122,11 +141,27 @@
       height: 45px;
       display: flex;
       padding-top: 5px;
-
+      background-color: #fafafa;
       img {
         width: .5rem;
       }
-
+      .buyCarLink {
+        position: relative;
+        #goods {
+          position: absolute;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          text-align: center;
+          line-height: 15px;
+          color: #ffffff;
+          background-color: @main-color;
+          font-size: .1rem;
+          right: 50%;
+          transform: translateX(.12rem);
+          top: -2px;
+        }
+      }
       .routerLink {
         flex: 1;
       }
@@ -138,23 +173,39 @@
     }
   }
 
-  .v-enter {
+  .main-enter {
     opacity: 0;
     transform: translateX(100vw);
   }
 
-  .v-leave-to {
+  .main-leave-to {
     opacity: 0;
     transform: translateX(-100vw);
     position: absolute;
   }
 
-  .v-enter-active,
-  .v-leave-active {
+  .main-enter-active,
+  .main-leave-active {
     transition: all .5s;
   }
 
-  .mint-header-title {
+  #header {
     font-size: .16rem !important;
   }
+
+  .search-enter
+   {
+    opacity: 0;
+    transform: translateY(-100vh);
+  }
+  .search-leave-to {
+    opacity: 0;
+    transform: translateY(100vh);
+  }
+
+  .search-enter-active,
+  .search-leave-active {
+    transition: all .5s
+  }
+
 </style>
