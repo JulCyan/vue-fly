@@ -1,14 +1,19 @@
 <template>
+
   <div id="searchContainer" @keyup.enter="search">
     <i class="el-icon-back" @click="back"></i>
     <i class="el-icon-search" @click="search" v-show="show"></i>
     <mt-search v-model="searchValue" class="search"></mt-search>
+
+
     <el-card class="box-card" v-if="show">
-      <div v-for="item in list" :key="item" class="text item">
+      <div v-for="item in list" :key="item" class="text item" @click="searchStart(item)">
         {{ item }}
       </div>
+
     </el-card>
   </div>
+
 </template>
 
 <script>
@@ -51,6 +56,8 @@
         console.log(searchHistory)
         this.list = searchHistory
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory))
+
+
         // this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
         //   this.loadingInstance.close()
         // })
@@ -59,7 +66,13 @@
           this.loadingInstance.close()
           this.$router.push({name: "goodslist", params: {search: this.searchValue}})
           this.$store.commit("changeTitle", "商品列表")
-        }, 2500)
+        }, 500)
+      },
+      searchStart(item) {
+        console.log(1);
+        console.log(item);
+        this.searchValue = item
+        this.search()
       }
     },
     watch: {
@@ -78,6 +91,11 @@
 <style lang="less">
   @main-color: #f10215;
   #searchContainer {
+    > .box-card {
+      position: absolute;
+      width: 100%;
+    }
+
     position: absolute;
     background-color: cyan;
     width: 100vw;
@@ -105,8 +123,10 @@
       .mint-searchbar-inner {
         height: .28rem;
 
+
         .mintui.mintui-search {
           font-size: .12rem;
+
         }
       }
 

@@ -9,7 +9,7 @@
         <div class="swiper-slide">
           <!-- 轮播图区域 -->
 
-          <mySlider :message="{sliderList}"></mySlider>
+          <mySlider :sliderList="sliderList"></mySlider>
 
 
           <!-- 导航条区域 -->

@@ -27,6 +27,7 @@
     <transition name="main">
 
       <router-view name="main"></router-view>
+
     </transition>
 
 
@@ -81,7 +82,8 @@
         this.$Toast({
           message: 'HI',
           position: 'middle',
-          duration: 2000
+          duration: 2000,
+          iconClass: "fa fa-heart"
         })
         this.changeCategory()
         this.$refs.home.src = "https://m.360buyimg.com/mobilecms/jfs/t15145/137/2502885754/3106/de5e0b14/5aa10cd2N46f18ce6.png"
@@ -100,10 +102,10 @@
 </script>
 
 
-<style lang="less" scoped>
+<style lang="less">
   @main-color: #f10215;
   #app {
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
     padding-top: .45rem;
     padding-bottom: .45rem;
@@ -208,4 +210,7 @@
     transition: all .5s
   }
 
+  .mint-toast-icon {
+    color: red;
+  }
 </style>

@@ -1,19 +1,17 @@
 <template>
+
   <div id="categoryContainer">
 
 
     <!-- 区域滚动的父容器 -->
-    <div class="swiper-container category-left">
+    <div class="swiper-container category-left category">
       <!-- 区域滚动的子容器 -->
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <!--这里放置真实显示的DOM内容-->
           <ul>
-            <li class="active"><a href="#">运动馆</a></li>
-            <li><a href="#">运动馆</a></li>
-            <li><a href="#">运动馆</a></li>
-            <li><a href="#">运动馆</a></li>
-            <li><a href="#">运动馆</a></li>
+            <li :class="item.id === id? 'active': ''" @click="changeCategory(item.id)" v-for="item in categoryList"
+                :key="item.id"><a href="javascript:void(0)">{{ item.categoryName }}</a></li>
           </ul>
         </div>
       </div>
@@ -24,45 +22,15 @@
     </div>
 
 
-    <div class="swiper-container category-right">
+    <div class="swiper-container category-right category">
       <!-- 区域滚动的子容器 -->
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <ul>
-            <li>
-              <a href="#">
-                <img src="../../assets/shop/images/brand1.png" alt="">
-                <p>耐克</p>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="../../assets/shop/images/brand1.png" alt="">
-                <p>耐克</p>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="../../assets/shop/images/brand1.png" alt="">
-                <p>耐克</p>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="../../assets/shop/images/brand1.png" alt="">
-                <p>耐克</p>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="../../assets/shop/images/brand1.png" alt="">
-                <p>耐克</p>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <img src="../../assets/shop/images/brand1.png" alt="">
-                <p>耐克</p>
+            <li v-for="item in secondCategory" :key="item.id">
+              <a href="javascript:void(0)">
+                <img :src="'http://localhost:3000'+ item.brandLogo" alt="">
+                <p>{{ item.brandName }}</p>
               </a>
             </li>
           </ul>
@@ -76,13 +44,41 @@
 
 
   </div>
+
 </template>
 
 <script>
   export default {
     name: "categoryContainer",
+    data() {
+      return {
+        categoryList: [],
+        secondCategory: [],
+        id: 1
+      }
+    },
+    methods: {
+      getCategoryList() {
+        this.$http.get("category/queryTopCategory").then((result) => {
+          console.log(this.categoryList = result.body.rows);
+        })
+      },
+      changeCategory(id) {
+        this.id = id
+        this.$http.get("category/querySecondCategory", {
+          params: {id}
+        },).then((result) => {
+          this.secondCategory = result.body.rows
+        })
+
+      }
+    },
+    created() {
+      this.getCategoryList()
+      this.changeCategory(1)
+    },
     mounted() {
-      new this.$Swiper(".swiper-container", {
+      new this.$Swiper(".swiper-container.category", {
         direction: "vertical",
         freeMode: true,
         slidesPerView: 'auto',
@@ -91,10 +87,12 @@
         scrollbar: {
           el: '.swiper-scrollbar',
         },
-      })
-    }
+      });
+    },
+
   }
 </script>
+
 
 <style scoped lang="less">
   @main-color: #f10215;
@@ -124,7 +122,8 @@
 
           &.active {
             a {
-              background-color: #ccc;
+              transition: all .5s;
+              background-color: #eee;
               color: @main-color;
             }
           }
@@ -153,6 +152,7 @@
           a {
             display: block;
             background-color: #fff;
+            color: black;
 
             img {
               width: 100%;
@@ -167,7 +167,7 @@
       }
     }
 
-    .swiper-container {
+    .swiper-container.category {
       height: 100%;
 
       .swiper-slide {

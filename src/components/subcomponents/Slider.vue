@@ -2,7 +2,7 @@
   <div class="swiper-container slider">
 
     <div class="swiper-wrapper">
-      <div class="swiper-slide" v-for="item in message.sliderList" :key="item.id">
+      <div class="swiper-slide" v-for="item in sliderList" :key="item.id">
         <img :src="item.src" alt="">
       </div>
 
@@ -18,7 +18,7 @@
   export default {
     name: "Slider",
     props: [
-      "message"
+      "sliderList"
     ],
     mounted() {
       new this.$Swiper('.swiper-container.slider', {
@@ -35,7 +35,8 @@
           el: '.swiper-scrollbar',
         },
       })
-    }
+    },
+
   }
 </script>
 
