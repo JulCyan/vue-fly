@@ -6,13 +6,13 @@
  
  2. 熟悉移动端开发框架
  
- 3. 能够单独架构 vue 应用
+ 3. 能够单独架构 vue 单页面应用程序
  
  4. 熟悉 vue 全家桶的使用
  
 ### 技术选型
 
- 1. 框架: vue mui, mint-ui, element, swiper
+ 1. 框架: vue, mui, mint-ui, element, swiper
  
  2. ajax: vue-resource 并使用interceptor进行登录检测
  
