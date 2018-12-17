@@ -12,13 +12,16 @@
  
 ### 技术选型
 
- 1. 框架: vue, mui, mint-ui, element, swiper
+ 1. 构建工具: Vue CLI 3 
+
+ 2. 开发框架: vue, mui, mint-ui, element, swiper
  
- 2. ajax: vue-resource 并使用interceptor进行登录检测
+ 3. Ajax: vue-resource 并使用 interceptor 进行登录检测
  
- 3. 路由: vue-router, 编程式导航
+ 4. 路由: vue-router, 编程式导航
  
- 4. 数据管理: vuex
+ 5. 数据管理: vuex
+ 
 
 ### 遇到的问题
 
