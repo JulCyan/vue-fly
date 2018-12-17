@@ -6,7 +6,9 @@ module.exports = {
     ["component",
       {
         "libraryName": ["mint-ui", "element-ui"],
+
         "style": true,
+
         "styleLibraryName": "theme-chalk"
       }
     ]
