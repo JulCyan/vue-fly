@@ -6,9 +6,14 @@
     <mt-search v-model="searchValue" class="search"></mt-search>
 
 
-    <el-card class="box-card" v-if="show">
-      <div v-for="item in list" :key="item" class="text item" @click="searchStart(item)">
+    <el-card class="box-card" v-if="show" shadow="hover">
+      <div slot="header" class="clearfix">
+        <span>历史记录</span>
+        <el-button style="float: right; padding: 3px 0" type="text" @click="clear">清空全部</el-button>
+      </div>
+      <div v-for="(item, index) in list" :key="item" class="text item" @click="searchStart(item)">
         {{ item }}
+        <el-button type="danger" icon="el-icon-delete" circle size="mini" class="delete" @click.stop="toDelete(index)"></el-button>
       </div>
 
     </el-card>
@@ -73,6 +78,16 @@
         console.log(item);
         this.searchValue = item
         this.search()
+      },
+      clear() {
+        localStorage.removeItem("searchHistory")
+        this.list = []
+      },
+      toDelete(index) {
+        const searchHistory = JSON.parse(localStorage.getItem("searchHistory") || "[]")
+        searchHistory.splice(index, 1)
+        this.list = searchHistory
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistory))
       }
     },
     watch: {
@@ -94,6 +109,12 @@
     > .box-card {
       position: absolute;
       width: 100%;
+      .item{
+        padding: 10px;
+      }
+      .delete {
+        float: right;
+      }
     }
 
     position: absolute;

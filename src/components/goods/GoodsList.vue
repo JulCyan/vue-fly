@@ -77,7 +77,7 @@
         productList: [],
         allLoaded: false,
         price: true,
-        num: true
+        num: true,
       }
     },
     methods: {
@@ -97,30 +97,25 @@
         this.$router.push({name: "goodsInfo", params: {id}})
       },
       loadBottom() {
-        this.page++
         this.getProduct().then((result) => {
-          setTimeout(() => {
-            this.productList = this.productList.concat(result.body.data)
             if (result.body.data.length == 0) {
+              this.allLoaded = true
+              this.$refs.loadmore.onBottomLoaded()
               this.$Toast({
                 message: "没有更多了",
                 duration: 1500
               })
+            }else {
+              this.productList = this.productList.concat(result.body.data)
+              this.page++
             }
-            this.$refs.loadmore.onBottomLoaded()
-          }, 500)
-          this.init()
-        })
+          })
       },
       loadTop() {
         this.page = 1
         this.getProduct().then((result) => {
-          setTimeout(() => {
             this.productList = result.body.data
             this.$refs.loadmore.onTopLoaded()
-            this.init()
-
-          }, 500)
         })
       },
       handleTopChange(status) {
@@ -139,7 +134,7 @@
             }
           })
               .then(result => {
-
+                console.log(result.body.data);
                 resolve(result)
               })
         })
@@ -182,7 +177,11 @@
     },
     created() {
       this.getProduct().then((result) => {
-        this.productList = result.body.data
+        if (result.body.data == []) {
+          this.allLoaded = true
+          this.$refs.loadmore.onBottomLoaded()
+          return this.$Toast("暂时找不到您要的商品")
+        }
       })
     },
     mounted() {

@@ -29,12 +29,17 @@
         pagination: {
           el: '.swiper-pagination',
         },
-
-        // 如果需要滚动条
-        scrollbar: {
-          el: '.swiper-scrollbar',
-        },
-      })
+      }),
+          new this.$Swiper(".swiper-container.goodsInfo", {
+            direction: "vertical",
+            freeMode: true,
+            slidesPerView: 'auto',
+            mousewheelControl: true,
+            roundLengths: true, //防止文字模糊
+            scrollbar: {
+              el: '.swiper-scrollbar',
+            },
+          })
     },
 
   }

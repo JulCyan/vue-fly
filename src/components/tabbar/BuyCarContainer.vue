@@ -27,8 +27,6 @@
 </template>
 
 <script>
-  import Swiper from "swiper"
-  import "swiper/dist/css/swiper.min.css"
 
   export default {
     name: "BuyCarContainer",
@@ -58,7 +56,7 @@
       }
     },
     mounted() {
-      new Swiper(".swiper-container.wrap", {
+      new this.$Swiper(".swiper-container.wrap", {
         direction: "vertical",
         freeMode: true,
         slidesPerView: 'auto',
