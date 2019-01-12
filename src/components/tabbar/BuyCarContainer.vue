@@ -1,21 +1,21 @@
 <template>
   <div id="buyCarContainer">
 
-    <!-- 小球 -->
-    <transition
-        @before-enter="beforeEnter"
-        @enter="enter"
-        @after-enter="afterEnter">
-      <div class="ball" v-show="ballFlag" ref="ball"></div>
-    </transition>
+
 
     <!-- 主体 -->
     <div class="swiper-container wrap">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
+          <!-- 小球 -->
+          <transition
+              @before-enter="beforeEnter"
+              @enter="enter"
+              @after-enter="afterEnter">
+            <div class="ball" v-show="ballFlag" ref="ball"></div>
+          </transition>
 
           <el-button type="success" icon="el-icon-check" circle @click="ballFlag=!ballFlag" class="btn"></el-button>
-
         </div>
         <!-- 滚动条 -->
 

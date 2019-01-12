@@ -5,7 +5,15 @@
 
     <!-- 顶部 -->
     <mt-header :title="$store.state.title" id="header">
+      <!-- 小球 -->
+
       <router-link to="/" slot="left">
+        <transition
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @after-enter="afterEnter">
+          <div class="ball" v-show="$store.state.ballFlag" ref="ball" :style="$store.state.ballStyle"></div>
+        </transition>
         <!--<mt-button icon="back">返回</mt-button>-->
       </router-link>
       <router-link tag="button" class="mint-button el-icon-search mint-button--default mint-button--normal" slot="right"
@@ -46,7 +54,7 @@
             src="https://img11.360buyimg.com/jdphoto/s130x100_jfs/t25261/337/1250179439/2765/db2976c3/5b8e4ac3N749fb56e.png">
       </router-link>
       <router-link to="buyCar" class="routerLink buyCarLink">
-        <span id="goods">{{ number }}</span>
+        <span id="goods">{{ $store.state.goodsNum }}</span>
         <img
             src="https://m.360buyimg.com/mobilecms/jfs/t18583/69/717127328/4407/5e47882b/5aa10ceaN649eec12.png">
       </router-link>
@@ -68,7 +76,10 @@
   export default {
     data() {
       return {
-        number : 0
+        ballStyle: {
+          top: '100px',
+          left: '100px'
+        }
       }
     },
     methods: {
@@ -96,7 +107,31 @@
       },
       changeTitle() {
         this.$store.commit("changeTitle", "我的商城")
+      },
+      beforeEnter(el) {
+
+        el.style.transform = "translate(0, 0)"
+      },
+      enter(el, done) {
+
+        const goods = document.getElementById("goods").getBoundingClientRect()
+        const ball = this.$refs.ball.getBoundingClientRect()
+
+        const xDistance = goods.left - ball.left
+
+        const yDistance = goods.bottom - ball.bottom
+        el.offsetWidth
+        el.style.transform = `translate(${xDistance}px, ${yDistance}px)`
+        el.style.transition = "all 0.7s cubic-bezier(.4,-0.6,.4,1)"
+        // el.style.transition = "all 2.5s"
+        done()
+      },
+      afterEnter() {
+        this.$store.commit("changeBallFlag")
       }
+    },
+    mounted() {
+      // this.$store.commit("changeBallStyle")
     }
   }
 </script>
@@ -212,5 +247,16 @@
 
   .mint-toast-icon {
     color: red;
+  }
+
+  .ball {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #f10215;
+    position: absolute;
+    z-index: 999;
+    /*top: 475px;*/
+    /*left: 185px;*/
   }
 </style>
