@@ -9,10 +9,13 @@ Vue.use(VueResource)
 // Vue 全局配置
 Vue.config.productionTip = false
 Vue.http.options.root = 'http://127.0.0.1:3000';
+// 设置表单提交形式
+Vue.http.options.emulateJSON = true;
+
 
 
 // 引入 Element-UI
-import { Icon, Button, Card, Loading, Select, Option, InputNumber } from 'element-ui'
+import { Icon, Button, Card, Loading, Select, Option, InputNumber, FormItem, Form, Input } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.prototype.$ELEMENT = { size: 'small', zIndex: 3000 }
@@ -23,6 +26,9 @@ Vue.use(Card)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(InputNumber)
+Vue.use(FormItem)
+Vue.use(Form)
+Vue.use(Input)
 Vue.prototype.$loading = Loading.service
 
 

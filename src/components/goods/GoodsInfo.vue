@@ -1,28 +1,19 @@
 <template>
   <div id="goodsInfo">
 
-    <!-- 小球 -->
-    <transition
-        @before-enter="beforeEnter"
-        @enter="enter"
-        @after-enter="afterEnter">
-      <div class="ball" v-show="ballFlag" ref="ball"></div>
-    </transition>
 
     <div class="swiper-container goodsInfo">
-      <div class="swiper-wrapper">
+
+      <div class="swiper-wrapper" id="swiperScroll">
         <div class="swiper-slide">
 
-
           <!-- 轮播图区域 -->
-          <mySlider :sliderList="sliderList"></mySlider>
-
-
-
+          <div id="slider">
+            <mySlider :sliderList="sliderList"></mySlider>
+          </div>
 
 
           <section id="wife">
-
 
 
             <div class="title">
@@ -50,17 +41,15 @@
             </div>
 
 
-
-
             <div class="count">
               <span>数量:</span>
-              <el-input-number v-model="num" :min="1" :max="maxNum" label="描述文字"></el-input-number>
+              <el-input-number v-model="num" :min="1" :max="maxNum" label="描述文字" id="number"></el-input-number>
               <span>剩余{{ Info.num }}件</span>
             </div>
 
 
             <div class="add">
-              <el-button type="primary" @click="ballFlag=!ballFlag" class="btn">加入购物车</el-button>
+              <el-button type="primary" @click="addBuyCar" class="btn">加入购物车</el-button>
               <el-button type="success" class="">立即购买</el-button>
             </div>
 
@@ -76,7 +65,7 @@
 
 <script>
   import Slider from "../subcomponents/Slider.vue"
-  import infanta01 from "../../assets/shop/images/infanta01.jpg"
+  // import infanta01 from "../../assets/shop/images/infanta01.jpg"
 
   export default {
     name: "GoodsInfo",
@@ -86,7 +75,7 @@
         Info: '',
         sliderList: [{
           id: 1,
-          src: infanta01
+          src: 'http://127.0.0.1:3000/mobile/images/detail.jpg'
         }
         ],
         options: [],
@@ -95,8 +84,8 @@
         remaining: 20,
         minSize: 40,
         maxSize: 50,
-        size: 0 ,
-        ballFlag: false,
+        size: 40,
+
       }
     },
     methods: {
@@ -105,14 +94,16 @@
             .then(result => {
 
               this.Info = result.body
-              console.log(this.Info);
+
+              // 图片
+              this.sliderList.src = 'http://127.0.0.1:3000' + this.Info.pic[0].picAddr
               // 码数
               let size = this.Info.size.split("-")
               this.minSize = parseInt(size[0])
               this.maxSize = parseInt(size[1])
-              let num = this.maxSize -this.minSize
+              let num = this.maxSize - this.minSize
               var arr = []
-              for (let i = 0; i <= num; i++ ) {
+              for (let i = 0; i <= num; i++) {
                 let obj = {}
                 obj.label = this.minSize
                 obj.value = `选项${i}`
@@ -127,23 +118,22 @@
 
             })
       },
-      beforeEnter(el) {
-        el.style.transform = "translate(0, 0)"
-      },
-      enter(el, done) {
-        const goods = document.getElementById("goods").getBoundingClientRect()
-        const ball = this.$refs.ball.getBoundingClientRect()
 
-        const xDistance = goods.left - ball.left
-        const yDistance = goods.bottom - ball.bottom
-        el.offsetWidth
-        el.style.transform = `translate(${xDistance}px, ${yDistance}px)`
-        el.style.transition = "all 0.7s cubic-bezier(.4,-0.6,.4,1)"
-        // el.style.transition = "all 2.5s"
-        done()
+      addBuyCar() {
+        this.$store.commit("changeBallFlag")
+        this.$http.post("cart/addCart", {productId: this.id, num: this.num, size: this.size})
+            .then(result => {
+              console.log(result.body);
+              if(result.body.error === 400) {
+                this.$router.push({path: "/login"})
+              }
+
+            })
       },
-      afterEnter() {
-        this.ballFlag = !this.ballFlag
+      scroll () {
+        setTimeout(() => {
+          this.$store.commit("changeBallStyle")
+        },1500)
       }
     },
     components: {
@@ -151,9 +141,13 @@
 
     },
     created() {
+
       this.getInfo(this.id)
     },
     mounted() {
+      let swiperScroll = document.getElementById("swiperScroll")
+      swiperScroll.addEventListener("touchend", this.scroll, false)
+
       new this.$Swiper(".swiper-container.goodsInfo", {
         direction: "vertical",
         freeMode: true,
@@ -164,7 +158,8 @@
           el: '.swiper-scrollbar',
         },
       })
-    }
+    },
+
   }
 </script>
 
@@ -172,7 +167,7 @@
 
   #goodsInfo {
     height: 100%;
-    overflow: hidden;
+    /*overflow: hidden;*/
     padding-left: 5px;
     padding-right: 5px;
 
@@ -214,10 +209,6 @@
               display: flex;
               justify-content: space-evenly;
               align-items: center;
-              > div {
-
-
-              }
 
               span {
                 text-align: center;
@@ -225,6 +216,7 @@
             }
 
             .count {
+              position: relative;
               display: flex;
               justify-content: space-evenly;
               align-items: center;
@@ -239,14 +231,12 @@
 
     }
   }
-  .ball {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background-color: #f10215;
-    position: absolute;
-    z-index: 999;
-    top: 475px;
-    left: 185px;
+
+
+
+  #slider {
+    width: 100vw;
+    height: 100vw;
+    /*height: auto;*/
   }
 </style>
