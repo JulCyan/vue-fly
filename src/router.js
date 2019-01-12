@@ -20,17 +20,6 @@ export default new VueRouter({
     {path: "/center", name: "center", components: {main: CenterContainer}},
     {path: "/search", name: "search", components: {search: Search}},
     {path: "/goodslist/:search", name: "goodslist", components: {main: GoodsList}},
-    {
-      path: "/goodsInfo/:id",
-      name: "goodsInfo",
-      components: {main: GoodsInfo},
-      beforeRouteEnter (to, from, next) {
-        next(vm => {
-          vm.$store.commit("changeBallStyle")
-        })
-      }
-    },
-    {path: "/login", name: "login", components: {main: () => import("./components/user/Login.vue")}},
-    {path: "/register", name: "register", components: {main: () => import("./components/user/Register.vue")}}
+    {path: "/goodsInfo/:id", name: "goodsInfo", components: {main: GoodsInfo}}
   ]
 })
