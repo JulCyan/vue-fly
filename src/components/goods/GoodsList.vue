@@ -28,7 +28,7 @@
               <div class="content">
                 <ul>
 
-                  <li v-for="item in productList" :key="item.id + Math.random()">
+                  <li v-for="item in productList" :key="item.id">
                     <a href="#" class="product">
                       <img class="product-img" :src="'http://127.0.0.1:3000' + item.pic[0].picAddr" alt="">
                       <p class="product-name">{{ item.proName }}</p>
@@ -37,7 +37,7 @@
                         <del>{{ '$ ' + item.oldPrice }}</del>
                       </p>
                       <p class="product-buy">
-                        <router-link :to="'/goodsInfo/'+item.id" tag="div"><el-button size="small" round type="primary" plain>立即购买</el-button></router-link>
+                        <el-button size="small" round @click="buy(item.id)" type="primary" plain>立即购买</el-button>
                       </p>
                     </a>
                   </li>
@@ -93,9 +93,9 @@
           },
         })
       },
-      // buy(id) {
-      //   this.$router.replace({name: "goodsInfo", params: {id}})
-      // },
+      buy(id) {
+        this.$router.push({name: "goodsInfo", params: {id}})
+      },
       loadBottom() {
         this.getProduct().then((result) => {
             if (result.body.data.length == 0) {
@@ -181,8 +181,6 @@
           this.allLoaded = true
           this.$refs.loadmore.onBottomLoaded()
           return this.$Toast("暂时找不到您要的商品")
-        } else {
-          this.productList = result.body.data
         }
       })
     },
